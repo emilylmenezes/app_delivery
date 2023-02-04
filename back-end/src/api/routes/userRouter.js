@@ -1,14 +1,16 @@
 const express = require('express');
 const {
     getUsersHandler,
-    getUsersByAdmin,
     deleteUserById,
 } = require('../controllers/userController');
+const getUser = require('../middleware/getUserByToken');
 
 const userRouter = express.Router();
 
+userRouter.use(getUser);
+
 userRouter.get('/', getUsersHandler);
-userRouter.get('/admin', getUsersByAdmin);
+userRouter.get('/admin', getUsersHandler);
 userRouter.delete('/admin/:id', deleteUserById);
 
 module.exports = userRouter;

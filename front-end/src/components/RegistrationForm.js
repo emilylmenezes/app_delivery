@@ -79,7 +79,7 @@ class RegistrationForm extends React.Component {
       const result = await instance
         .post('register', body, { headers: { Authorization: token } });
       getUsers();
-
+      console.log({ pathName });
       if (result && pathName.includes('register')) {
         const { history } = this.props;
         localStorage.setItem('user', JSON.stringify(result.data.user));

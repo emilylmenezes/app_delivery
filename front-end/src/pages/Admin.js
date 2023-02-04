@@ -18,7 +18,9 @@ class Admin extends React.Component {
   }
 
   getUsers = async () => {
-    const result = await instance.get('user/admin');
+    const { token } = JSON.parse(localStorage.getItem('user')) || { token: '' };
+    const result = await instance.get('user/admin', {
+      headers: { Authorization: token } });
     this.setState({
       users: result.data,
     });
