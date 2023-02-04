@@ -1,4 +1,3 @@
-const { log } = require("console");
 const jwt = require('jsonwebtoken');
 require('dotenv/config');
 const path = require('path');

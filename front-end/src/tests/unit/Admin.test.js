@@ -54,7 +54,8 @@ describe('Testando a pagina do administrador', () => {
       expect(getRegisterBtn()).toBeDisabled();
 
       await waitFor(() => {
-        expect(instance.get).toHaveBeenCalledWith('user/admin');
+        expect(instance.get).toHaveBeenCalledWith('user/admin', {
+          headers: { Authorization: validToken } });
         expect(instance.get).toHaveBeenCalledTimes(1);
 
         usersList.forEach((user, index) => {
@@ -113,7 +114,6 @@ describe('Testando a pagina do administrador', () => {
       await waitFor(() => {
         expect(instance.delete).toHaveBeenCalledWith(
           `user/admin/${usersList.length}`,
-          {},
           { headers: { Authorization: validToken } },
         );
         expect(instance.delete).toHaveBeenCalledTimes(1);

@@ -17,7 +17,7 @@ describe('Teste da rota de User', () => {
 
   it('Deve retornar um array de usuários da rota administrador', async () => {
     
-   sinon.stub(User, 'findAll').resolves(mockUserArray)
+    sinon.stub(User, 'findAll').resolves(mockUserArray)
 
     const response = await chai.request(app).get('/user/admin').set('authorization', mockToken);
 
@@ -30,6 +30,14 @@ describe('Teste da rota de User', () => {
     expect(response.body[0].name).to.be.equal('Delivery App Admin')
     expect(response.body[0].role).to.be.equal('administrator')
 
-    User.findAll.restore()
-  })
+    User.findAll.restore();
+  });
+
+  it('Deve deletar um usuáio pela rota administrador', async () => {
+    sinon.stub(User, 'destroy').resolves(1);
+
+    const response = await chai.request(app).delete('/user/admin/3').set('authorization', mockToken);
+
+    expect(response.status).to.be.equal(202);
+  });
 })
