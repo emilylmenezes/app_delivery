@@ -11,6 +11,7 @@ class OrderDetails extends React.Component {
   constructor() {
     super();
     this.state = {
+      user: JSON.parse(localStorage.getItem('user')) || { token: '' },
       order: {
         id: 0,
         saleDate: '',
@@ -29,15 +30,16 @@ class OrderDetails extends React.Component {
       match: { params: { id } },
       history: { location: { pathname } },
     } = this.props;
+    const { user: { token } } = this.state;
     const helperPathname = (pathname.includes('seller')) ? 'seller' : 'customer';
     this.setState({
       pathname: helperPathname,
       isSeller: helperPathname === 'seller',
     });
-    this.fetchOrderById(`customer/orders/${id}`);
+    this.fetchOrderById(`customer/orders/${id}`, { headers: { Authorization: token } });
   }
 
-  fetchOrderById = async (endpoint) => requestData(endpoint)
+  fetchOrderById = async (endpoint, options) => requestData(endpoint, options)
     .then((response) => this.setState({
       order: {
         id: response.id,
@@ -55,7 +57,7 @@ class OrderDetails extends React.Component {
     }), (error) => console.log(error));
 
   handleChangeStatusById = async (status, id) => {
-    const { token } = JSON.parse(localStorage.getItem('user')) || { token: '' };
+    const { user: { token } } = this.state;
     try {
       const result = await instance
         .put(`/orders/${id}`, { status }, { headers: { Authorization: token } });
