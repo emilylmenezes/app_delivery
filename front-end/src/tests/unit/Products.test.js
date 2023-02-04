@@ -127,8 +127,11 @@ describe('Testando a página de Produtos', () => {
       userEvent.type(getAllQtyInputs()[1], '4');
       expect(getCheckoutBtn()).not.toBeDisabled();
       instance.get.mockResolvedValueOnce(sellerResponseData);
-      localStorage.getItem.mockReturnValueOnce(cartStringfied)
-        .mockReturnValue(userStringfied);
+      localStorage.getItem.mockImplementation((keyName) => {
+        if (keyName === 'user') return userStringfied;
+        if (keyName === 'cart') return cartStringfied;
+        return null;
+      });
       userEvent.click(getCheckoutBtn());
       await waitFor(() => {
         screen.getByRole('heading', { name: /finalizar pedido/i });

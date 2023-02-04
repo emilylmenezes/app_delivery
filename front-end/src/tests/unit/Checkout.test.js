@@ -128,9 +128,12 @@ describe('Testando a página de Checkout', () => {
   });
 
   beforeEach(() => {
-    instance.get.mockImplementationOnce(() => Promise.resolve(sellerResponseData));
-    localStorage.getItem.mockReturnValueOnce(cartStringfied)
-      .mockReturnValue(userStringfied);
+    instance.get.mockResolvedValueOnce(sellerResponseData);
+    localStorage.getItem.mockImplementation((keyName) => {
+      if (keyName === 'user') return userStringfied;
+      if (keyName === 'cart') return cartStringfied;
+      return null;
+    });
     renderWithRouter(<App />, { initialEntries: ['/customer/checkout'] });
   });
 
