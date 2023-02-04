@@ -5,6 +5,7 @@ import App from '../../App';
 import renderWithRouter from '../helpers/renderWithRouter';
 import {
   cartStringfied,
+  ordersListResponseData,
   productsResponseData,
   sellerResponseData,
   userStringfied,
@@ -23,6 +24,8 @@ describe('Testando a página de Produtos', () => {
     .getAllByRole('button', { name: 'Diminuir quantidade do produto' });
   const getAllQtyInputs = () => screen.getAllByRole('spinbutton', { name: /quantidade do produto/i });
   const getCheckoutBtn = () => screen.getByRole('button', { name: /Preço Total do Carrinho/i });
+  const getOrdersLink = () => screen.getByRole('link', { name: /meus pedidos/i });
+  const getLogoutLink = () => screen.getByRole('link', { name: /sair/i });
 
   describe('Testando a existência da lista de cards com os produtos', () => {
     it('Deve existir uma lista de cards com a descrição, imagem, quantidade, preço e'
@@ -133,11 +136,43 @@ describe('Testando a página de Produtos', () => {
     });
   });
 
+  describe('Testando a existência do NavBar', () => {
+    it('Deve existir um link para a página de Meus Pedidos, '
+      + 'um texto informando o nome do usuário, um link para Sair'
+      + ' e deslogar, e Texto com o nome de Produtos', async () => {
+      expect(screen.getByText(/produtos/i)).toBeInTheDocument();
+      expect(getOrdersLink()).toBeInTheDocument();
+      expect(screen.getByText(/cliente da silva/i)).toBeInTheDocument();
+      expect(getLogoutLink()).toBeInTheDocument();
+    });
+  });
+
+  describe('Testando os links do Navbar', () => {
+    it('Deve ir para a tela de meus pedidos ao clicar em Meus Pedidos', async () => {
+      instance.get.mockResolvedValueOnce(ordersListResponseData);
+      userEvent.click(getOrdersLink());
+      await waitFor(() => {
+        expect(screen.getAllByRole('button', { name: /pedido/i })).toHaveLength(ordersListResponseData.data.length);
+      });
+    });
+
+    it('Deve voltar para a tela de Login e remover o usuário do'
+      + ' localStorage ao clicar em Sair', async () => {
+      expect(getLogoutLink()).toBeInTheDocument();
+      localStorage.getItem.mockReturnValue(null);
+      userEvent.click(getLogoutLink());
+      expect(screen.getByRole('textbox', { name: /login/i })).toBeInTheDocument();
+      screen.logTestingPlaygroundURL();
+    });
+  });
+
   beforeAll(() => {
     jest.spyOn(Storage.prototype, 'setItem');
     jest.spyOn(Storage.prototype, 'getItem');
+    jest.spyOn(Storage.prototype, 'removeItem');
     Storage.prototype.setItem = jest.fn();
     Storage.prototype.getItem = jest.fn();
+    Storage.prototype.removeItem = jest.fn();
   });
 
   beforeEach(() => {
@@ -148,12 +183,14 @@ describe('Testando a página de Produtos', () => {
 
   afterEach(() => {
     localStorage.getItem.mockRestore();
+    localStorage.setItem.mockRestore();
     instance.get.mockRestore();
   });
 
   afterAll(() => {
-    jest.clearAllMocks();
     Storage.prototype.setItem.mockClear();
     Storage.prototype.getItem.mockClear();
+    Storage.prototype.removeItem.mockClear();
+    jest.clearAllMocks();
   });
 });
