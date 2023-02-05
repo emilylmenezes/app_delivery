@@ -9,9 +9,9 @@ import {
   emailValid,
   passwordInvalidList,
   passwordValid,
-  role,
-  validToken,
-  validUseName } from '../helpers/constants';
+  userDataResponse,
+  userStringfied,
+} from '../helpers/constants';
 import instance from '../../helpers/instance';
 
 describe('Testando a página de Login', () => {
@@ -20,24 +20,13 @@ describe('Testando a página de Login', () => {
   const getLoginBtn = () => screen.getByRole('button', { name: /login/i });
   const getRegisterBtn = () => screen.getByRole('button', { name: /Ainda não tenho conta/i });
 
-  const userDataResponse = {
-    data: {
-      token: validToken,
-      id: 4,
-      email: validUseName,
-      name: emailValid,
-      role: role.customer,
-    },
-  };
-
-  const userStringfied = JSON.stringify(userDataResponse.data);
-
   describe('Testando a existência do formulário na página', () => {
     beforeEach(() => {
       renderWithRouter(<App />);
     });
 
-    it('Deve existir um formulário de Login com input de test e email', () => {
+    it('Deve existir um formulário de Login com input de email e password,'
+      + 'um botão de login desabilitado e um de cadastrar', () => {
       expect(getEmailInput()).toBeInTheDocument();
       expect(getPasswordInput()).toBeInTheDocument();
       expect(getLoginBtn()).toBeInTheDocument();
@@ -55,13 +44,13 @@ describe('Testando a página de Login', () => {
     it('O botão de login deve permanecer desabilitado ao'
       + ' inserir dados de forma incorreta', () => {
       emailInvalidList.forEach((invalidEmail) => {
-        userEvent.type(getEmailInput(), invalidEmail);
+        userEvent.type(getEmailInput(), invalidEmail || '{tab}');
         userEvent.type(getPasswordInput(), passwordValid);
         expect(getLoginBtn()).toBeDisabled();
       });
 
       passwordInvalidList.forEach((invalidPassword) => {
-        userEvent.type(getPasswordInput(), invalidPassword);
+        userEvent.type(getPasswordInput(), invalidPassword || '{tab}');
         userEvent.type(getEmailInput(), emailValid);
         expect(getLoginBtn()).toBeDisabled();
       });

@@ -8,6 +8,7 @@ import passwordValidate from '../utils/password.validate';
 class RegistrationForm extends React.Component {
   constructor() {
     super();
+    this.isComponentMounted = false;
     this.state = {
       name: '',
       email: '',
@@ -20,7 +21,20 @@ class RegistrationForm extends React.Component {
   }
 
   componentDidMount() {
+    this.isMounted = true;
     this.definePathName();
+  }
+
+  componentWillUnmount() {
+    this.isMounted = false;
+  }
+
+  get isMounted() {
+    return this.isComponentMounted;
+  }
+
+  set isMounted(bool) {
+    this.isComponentMounted = bool;
   }
 
   definePathName = () => {
@@ -60,37 +74,43 @@ class RegistrationForm extends React.Component {
       const user = JSON.parse(localStorage.getItem('user'));
       token = user.token;
     }
-    const result = await instance
-      .post('register', body, { headers: { Authorization: token } }).catch((err) => {
+
+    try {
+      const result = await instance
+        .post('register', body, { headers: { Authorization: token } });
+      getUsers();
+      console.log({ pathName });
+      if (result && pathName.includes('register')) {
+        const { history } = this.props;
+        localStorage.setItem('user', JSON.stringify(result.data.user));
+        history.push('/customer/products');
+      }
+
+      if (this.isMounted) {
         this.setState({
-          message: err.request.statusText,
+          name: '',
+          email: '',
+          password: '',
+          role: 'customer',
+          disabled: true,
         });
+      }
+    } catch (error) {
+      this.setState({
+        message: error.request.statusText,
       });
-
-    getUsers();
-
-    if (result && pathName.includes('register')) {
-      const { history } = this.props;
-      localStorage.setItem('user', JSON.stringify(result.data.user));
-      history.push('/customer/products');
     }
-
-    this.setState({
-      name: '',
-      email: '',
-      password: '',
-      role: 'customer',
-      disabled: true,
-    });
   };
 
   render() {
     const { name, email, password, role, message, disabled, pathName } = this.state;
     const testIdByPathname = (pathName.includes('admin'))
       ? 'admin_manage' : 'common_register';
+    const invalidRegisterSuffix = (pathName.includes('admin'))
+      ? '__element-invalid-register' : '__element-invalid_register';
     const messageText = (message === '') ? <> </>
       : (
-        <p data-testid={ `${testIdByPathname}__element-invalid-register` }>
+        <p data-testid={ `${testIdByPathname}${invalidRegisterSuffix}` }>
           { message }
         </p>
       );
@@ -103,6 +123,7 @@ class RegistrationForm extends React.Component {
           <label htmlFor="name">
             Nome
             <input
+              id="name"
               type="text"
               name="name"
               data-testid={ `${testIdByPathname}__input-name` }
@@ -114,6 +135,7 @@ class RegistrationForm extends React.Component {
           <label htmlFor="email">
             Email
             <input
+              id="email"
               type="email"
               name="email"
               data-testid={ `${testIdByPathname}__input-email` }
@@ -125,6 +147,7 @@ class RegistrationForm extends React.Component {
           <label htmlFor="password">
             Senha
             <input
+              id="password"
               type="password"
               name="password"
               data-testid={ `${testIdByPathname}__input-password` }
@@ -139,6 +162,7 @@ class RegistrationForm extends React.Component {
                 <label htmlFor="role">
                   Tipo
                   <select
+                    id="role"
                     name="role"
                     data-testid="admin_manage__select-role"
                     defaultValue="customer"

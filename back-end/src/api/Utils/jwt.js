@@ -30,8 +30,8 @@ const authenticateToken = async (token) => {
     return { status, message };
   }
   try {
-    const validateToken = jwt.verify(token, TOKEN_SECRET_KEY);
-    return validateToken;
+    const userData = jwt.verify(token, TOKEN_SECRET_KEY);
+    return { status: null, message: userData };
   } catch (error) {
     const status = 401;
     const message = 'Expired or invalid token';
@@ -39,13 +39,7 @@ const authenticateToken = async (token) => {
   }
 };
 
-const decodeToken = async (token) => {
-  const { payload } = jwt.verify(token, TOKEN_SECRET_KEY);
-  return payload;
-};
-
 module.exports = {
   generateToken,
   authenticateToken,
-  decodeToken,
 };

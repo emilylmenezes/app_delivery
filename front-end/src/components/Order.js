@@ -35,7 +35,12 @@ export default class Order extends React.Component {
     const formattedSaleDate = new Date(saleDate).toLocaleDateString('pt-BR');
 
     return (
-      <button type="button" onClick={ () => this.nextPage(id) } className="order">
+      <button
+        aria-label="Pedido"
+        type="button"
+        onClick={ () => this.nextPage(id) }
+        className="order"
+      >
         <section>
           <div>Pedido</div>
           <div data-testid={ `${person}_orders__element-order-id-${id}` }>

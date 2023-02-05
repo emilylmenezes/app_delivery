@@ -18,7 +18,9 @@ class Admin extends React.Component {
   }
 
   getUsers = async () => {
-    const result = await instance.get('user/admin');
+    const { token } = JSON.parse(localStorage.getItem('user')) || { token: '' };
+    const result = await instance.get('user/admin', {
+      headers: { Authorization: token } });
     this.setState({
       users: result.data,
     });
@@ -46,7 +48,6 @@ class Admin extends React.Component {
                       <th>Item</th>
                       <th>Nome</th>
                       <th>E-mail</th>
-                      <th>Senha</th>
                       <th>tipo</th>
                       <th>Excluir</th>
                     </tr>

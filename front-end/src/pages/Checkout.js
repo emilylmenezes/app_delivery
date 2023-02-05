@@ -12,6 +12,7 @@ class Checkout extends React.Component {
   constructor() {
     super();
     this.state = {
+      user: JSON.parse(localStorage.getItem('user')) || { token: '' },
       selectedProductsList: JSON.parse(localStorage.getItem('cart')) || [],
       sellers: [],
       sellerId: 0,
@@ -21,7 +22,8 @@ class Checkout extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchSellers('user?role=seller');
+    const { user: { token } } = this.state;
+    this.fetchSellers('user?role=seller', { headers: { Authorization: token } });
   }
 
   handleUpdateSelectedProducts() {
@@ -29,7 +31,7 @@ class Checkout extends React.Component {
     localStorage.setItem('cart', JSON.stringify(selectedProductsList));
   }
 
-  fetchSellers = async (endpoint) => requestData(endpoint)
+  fetchSellers = async (endpoint, options) => requestData(endpoint, options)
     .then((response) => this.setState({
       sellers: response,
       sellerId: response[0].id,
@@ -68,7 +70,7 @@ class Checkout extends React.Component {
   };
 
   postOrder = async (order) => {
-    const { token } = JSON.parse(localStorage.getItem('user')) || { token: '' };
+    const { user: { token } } = this.state;
     try {
       const result = await instance
         .post('/customer/orders', order, { headers: { Authorization: token } });
@@ -108,7 +110,7 @@ class Checkout extends React.Component {
             <h2>Detalhes e Endereço para Entrega</h2>
             <DeliveryForm
               sellersList={ sellers }
-              sellerId={ sellerId }
+              sellerId={ +sellerId }
               deliveryAddress={ deliveryAddress }
               deliveryNumber={ deliveryNumber }
               onInputChange={ this.handleInputChange }
