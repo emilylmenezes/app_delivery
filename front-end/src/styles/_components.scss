@@ -1,0 +1,270 @@
+.input {
+  border: $secondary-color;
+  border-radius: 10px;
+  color: $text-color;
+  padding: 7px;
+  text-align: center;
+}
+
+.btn {
+  background-color: $text-color;
+  border: $main-color-bg;
+  border-radius: 10px;
+  color: $main-color;
+  padding: 7px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: $secondary-color;
+  cursor: auto;
+}
+
+.btn-qtd {
+  background-color: $main-color-bg;
+  color: $text-color;
+  border-radius: 3px;
+  border: $secondary-color;
+  padding: 3px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.btn-qtd:active {
+  background-color: $support-color;
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+.input-qtd {
+  border: $secondary-color;
+  width: 50px;
+  padding: 1px 0 1px 4px;
+  border-radius: 3px;
+}
+
+%nav-child {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav {
+  align-items: center;
+  background-color: $main-color;
+  color: $text-color;
+  display: flex;
+  flex-direction: row;
+  height: 03em;
+  justify-content: space-between;
+  width: 100%;
+
+  .clear-decoration {
+    color: $text-color;
+    text-decoration: none;
+  }
+
+  .expose {
+    background-color: $text-color;
+    color: $main-color;
+    @extend %nav-child;
+    padding: 0 8px;
+  }
+
+  .nav-div {
+    @extend %nav-child;
+    padding: 0 8px;
+  }
+
+  .nav-child {
+    @extend %nav-child;
+  }
+
+  .nav-name {
+    @extend %nav-child;
+    background-color: $main-color-support;
+    flex-grow: 1;
+    padding: 0 8px;
+  }
+
+  .nav-exit {
+    @extend %nav-child;
+    padding: 0 8px;
+    background-color: $secondary-color;
+    color: $main-color;
+    flex-grow: 0;
+  }
+}
+
+img {
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+#img-1 {
+  width: 81px;
+}
+
+.card-first-section {
+  display: flex;
+  width: 90%;
+}
+
+.card-second-section {
+  @include flex-column-center;
+  width: 110%;
+  padding: 4px;
+  border-radius: 0 0 10px 10px;
+  background-color: $main-color-support;
+}
+
+.product-price {
+  font-size: 1.3em;
+  background-color: $main-color-bg;
+  padding: 3px;
+  position: absolute;
+  z-index: 50;
+}
+
+.product-name {
+  font-size: 0.8em;
+}
+
+.qtd-section {
+  display: flex;
+  width: 60%;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 0 7px 0;
+}
+
+.display-cart {
+  bottom: 10px;
+  position: fixed;
+  right: 10px;
+  z-index: 100;
+}
+
+.display-cart-button {
+  background-color: $text-color;
+  border: none;
+  color: $main-color;
+  font-size: 16px;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.display-cart-button:disabled {
+  opacity: 0.3;
+}
+
+.checkout {
+  width: 95%;
+}
+
+.table {
+  width: 100%;
+  font-size: 2vw;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-body {
+  text-align: center;
+}
+
+.table-item {
+  background-color: $text-color;
+}
+
+.product-counter {
+  background-color: $text-color;
+  color: $main-color-bg;
+}
+
+.product-description {
+  background-color: $main-color-bg-support;
+}
+
+.product-quantity {
+  background-color: $main-color;
+}
+
+.product-price-unit {
+  background-color: $main-color-support;
+}
+
+.product-price-total {
+  background-color: $secondary-color;
+  color: $main-color-bg;
+}
+
+.btn-rm {
+  vertical-align: middle;
+  background-color: $text-color;
+  color: $main-color;
+  border: $secondary-color;
+  width: 100%;
+  cursor: pointer;
+}
+
+.total-price-info {
+  margin-left: 70%;
+  font-size: 3vw;
+}
+
+.delivery-details {
+  @include flex-column-center;
+  gap: 20px;
+}
+
+.delivery-header {
+  margin: 0;
+}
+
+.label-vend {
+  flex-grow: 1;
+}
+.label-add {
+  flex-grow: 4;
+}
+.label-add-num {
+  flex-grow: 0;
+}
+
+.select {
+  border: $secondary-color;
+  border-radius: 5px;
+  color: $main-color-bg-support;
+  background: $text-color;
+}
+
+.order-details {
+  background-color: $main-color-bg-support;
+  padding-left: 7px;
+}
+
+.delivery-status {
+  background-color: $main-color;
+  padding: 7px;
+}
+
+.h2-header {
+  margin: 2px;
+}
+
+.order {
+  color: $text-color;
+}
+
+.card-order {
+  gap: 2px;
+  cursor: pointer;
+}

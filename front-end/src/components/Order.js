@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import '../App.css';
+import React from 'react';
 
 export default class Order extends React.Component {
   constructor() {
@@ -35,19 +34,19 @@ export default class Order extends React.Component {
     const formattedSaleDate = new Date(saleDate).toLocaleDateString('pt-BR');
 
     return (
-      <button
-        aria-label="Pedido"
-        type="button"
-        onClick={ () => this.nextPage(id) }
-        className="order"
-      >
-        <section>
-          <div>Pedido</div>
-          <div data-testid={ `${person}_orders__element-order-id-${id}` }>
-            { id }
-          </div>
-        </section>
-        <div>
+      <div className="cards-section">
+        <button
+          aria-label="Pedido"
+          type="button"
+          onClick={ () => this.nextPage(id) }
+          className="order cards-main-color card-order"
+        >
+          <section>
+            <h2 className="h2-header">Pedido</h2>
+            <div data-testid={ `${person}_orders__element-order-id-${id}` }>
+              { id }
+            </div>
+          </section>
           <section data-testid={ `${person}_orders__element-delivery-status-${id}` }>
             { status }
           </section>
@@ -55,19 +54,24 @@ export default class Order extends React.Component {
             <div data-testid={ `${person}_orders__element-order-date-${id}` }>
               { formattedSaleDate }
             </div>
-            <div data-testid={ `${person}_orders__element-card-price-${id}` }>
-              { totalPrice.replace('.', ',') }
-            </div>
+            <span>
+              R$:
+              {' '}
+              <span data-testid={ `${person}_orders__element-card-price-${id}` }>
+                { totalPrice.replace('.', ',') }
+              </span>
+            </span>
           </section>
-        </div>
-        {
-          (seller) ? (
-            <div data-testid={ `${person}_orders__element-card-address-${id}` }>
-              { address }
-            </div>
-          ) : (<> </>)
-        }
-      </button>
+
+          {
+            (seller) ? (
+              <div data-testid={ `${person}_orders__element-card-address-${id}` }>
+                { address }
+              </div>
+            ) : (<> </>)
+          }
+        </button>
+      </div>
     );
   }
 }

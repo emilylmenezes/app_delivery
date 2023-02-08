@@ -1,0 +1,87 @@
+@mixin layout($max-width: 500px) {
+  background: $main-color;
+  width: 90%;
+  max-width: $max-width;
+}
+
+@mixin forms($max: 80%) {
+  gap: 7px;
+  max-width: $max;
+  input {
+    width: 100%;
+  }
+}
+
+%card {
+  @include card-details;
+  @include flex-column-center;
+  gap: 4px;
+  padding: 1em;
+  width: 15em;
+  height: 13em;
+}
+
+.login {
+  @include flex-column-center;
+  @include card-details;
+  @include layout;
+  height: 90%;
+}
+
+.register {
+  @include card-details;
+  @include flex-column-center;
+  @include layout;
+  min-height: 50%;
+  max-height: 90%;
+}
+
+.delivery {
+  @include card-details;
+  @include flex-column-center;
+  @include layout($max-width: 800px);
+  height: 200px;
+}
+
+.forms {
+  @include flex-row-center($wrap: wrap);
+  @include forms;
+  width: 400px;
+}
+
+.forms-child {
+  @include flex-row-center;
+  gap: 5px;
+  flex-basis: 195px;
+}
+
+.forms-child-non-basis {
+  @include flex-row-center;
+  gap: 5px;
+  flex-grow: 1;
+}
+
+.forms-full {
+  @include flex-row-center($wrap: wrap);
+  @include forms(95%);
+}
+
+.cards-section {
+  @include flex-row-center($wrap: wrap);
+  width: 95%;
+  gap: 1em;
+  padding: 7px;
+  color: $text-color;
+  font-weight: 500;
+
+  .cards {
+    @extend %card;
+    background-color: white;
+  }
+
+  .cards-main-color {
+    @extend %card;
+    background-color: $main-color;
+    border: $secondary-color;
+  }
+}
