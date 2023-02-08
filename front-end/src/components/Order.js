@@ -36,6 +36,7 @@ export default class Order extends React.Component {
     return (
       <div className="cards-section">
         <button
+          aria-label="Pedido"
           type="button"
           onClick={ () => this.nextPage(id) }
           className="order cards-main-color card-order"

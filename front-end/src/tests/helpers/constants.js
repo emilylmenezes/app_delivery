@@ -41,8 +41,8 @@ export const userDataResponse = {
   data: {
     token: validToken,
     id: 4,
-    email: validUseName,
-    name: emailValid,
+    email: emailValid,
+    name: validUseName,
     role: role.customer,
   },
 };
@@ -195,3 +195,25 @@ export const productsResponseData = { data: [
     urlImage: 'http://localhost:3001/images/stella_artois_275ml.jpg',
   },
 ] };
+
+export const ordersListResponseData = {
+  data: [{
+    id: 1,
+    userId: 4,
+    sellerId: 2,
+    totalPrice: '6.60',
+    deliveryAddress: 'Avenida Jose',
+    deliveryNumber: '2321',
+    saleDate: '2023-02-03T14:29:12.000Z',
+    status: 'Pendente',
+  }, {
+    id: 2,
+    userId: 4,
+    sellerId: 2,
+    totalPrice: '1.20',
+    deliveryAddress: 'Avenida Jose',
+    deliveryNumber: '2123',
+    saleDate: '2023-02-03T14:32:58.000Z',
+    status: 'Pendente',
+  }],
+};
